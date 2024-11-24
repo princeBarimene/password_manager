@@ -1,11 +1,35 @@
 from tkinter import *
 from tkinter import messagebox
+from random import randint,choice, shuffle
 
 
 
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+
+
+letters_list = [choice(letters) for char in range(randint(8, 10))]
+
+symbols_list = [choice(symbols) for char in range(randint(2, 4))]
+
+numbers_list = [choice(numbers) for char in range(randint(2, 4))]
+
+
+password_list = letters_list + symbols_list + numbers_list
+
+shuffle(password_list)
+
+password = "".join(password_list)
+
+
+print(f"Your password is: {password}")
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
@@ -15,13 +39,20 @@ def save():
     email = email_input.get()
     password = password_input.get()
 
-    is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email}\nPassword: {password}\nIs it okay to save?")
+    if not website or not password:
+        messagebox.showerror(title="Opps", message="Please do not leave any fields empty!")
+    
+    else: 
 
-    if is_ok:
-        with open("data.txt", mode="a") as file:
-            file.write(f"{website} | {email} | {password} \n")
-            website_input.delete(first=0,last=END)
-            password_input.delete(first=0, last=END)
+
+        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email}\nPassword: {password}\nIs it okay to save?")
+        if is_ok:
+            with open("data.txt", mode="a") as file:
+                file.write(f"{website} | {email} | {password} \n")
+                website_input.delete(first=0,last=END)
+                password_input.delete(first=0, last=END)
+
+    
 
     
 
