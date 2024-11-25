@@ -53,21 +53,33 @@ def save():
 
     if not website or not password:
         messagebox.showerror(title="Opps", message="Please do not leave any fields empty!")
-    
-    else: 
 
-        with open("data.json", mode="r") as file:
-            #reading old data
-            data = json.load(file)
+    else:
+        try:
+            with open("data.json", mode="r") as file:
+                data = json.load(file)
+                
 
-            #updating old data with new data
+        except FileNotFoundError:
+            with open("data.json", mode="w") as file:
+                json.dump(new_data, file, indent = 4)
+        
+        else:
             data.update(new_data)
 
+            with open("data.json", mode="w") as file:
+                json.dump(data,file, indent=4)
 
-        with open("data.json", mode="w") as file:
-            json.dump(data,file,indent=4)
-            website_input.delete(first=0,last=END)
-            password_input.delete(first=0, last=END)
+        finally:
+            website_input.delete(0,END)
+            password_input.delete(0,END)
+
+        
+    
+       
+
+
+            
 
     
 
