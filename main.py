@@ -6,6 +6,9 @@ import json
 
 
 
+global website
+
+
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -74,7 +77,36 @@ def save():
             website_input.delete(0,END)
             password_input.delete(0,END)
 
-        
+
+
+# search the database and retrieve info#
+
+
+def find_password():
+    website = website_input.get()
+
+    try:
+        with open("data.json",mode="r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found")
+    else:        
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=f"{website}", message=f"Email: {email} \n Password: {password}")
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {website} exists!")
+
+       
+
+
+
+
+def clear_entry():
+    website_input.delete(0,END)
+    password_input.delete(0,END)
+      
     
        
 
@@ -112,8 +144,8 @@ password_label.grid(column=0, row=3)
 
 
 #create inputs
-website_input = Entry(width=45)
-website_input.grid(column=1, row=1, columnspan=2)
+website_input = Entry(width=26)
+website_input.grid(column=1, row=1)
 website_input.focus()
 
 email_input = Entry(width=45)
@@ -131,6 +163,12 @@ generate_button.grid(column=2, row=3)
 
 add_button = Button(text="Add", width=42, command=save)
 add_button.grid(column=1, row=4, columnspan=2)
+
+search_button = Button(text="Search", command=find_password,width=15)
+search_button.grid(column=2, row=1)
+
+clear_button = Button(text="Clear", width=42, command=clear_entry)
+clear_button.grid(column=1, row=5, columnspan=2)
 
 
 
